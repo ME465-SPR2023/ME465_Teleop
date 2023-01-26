@@ -16,7 +16,7 @@ class TeleopNode(Node):
         )
         self.robot_command = self.create_publisher(
             Twist,
-            "/commands/velocity",
+            "/teleop_vel",
             5,
         )
         
@@ -24,7 +24,8 @@ class TeleopNode(Node):
         command = Twist()
         command.linear.x = 0.2 * msg.axes[1]
         command.angular.z = 1.5 * msg.axes[0]
-        self.robot_command.publish(command)
+        if command.linear.x != 0 or command.angular.z != 0:
+            self.robot_command.publish(command)
         
 
 def main(args=None):
